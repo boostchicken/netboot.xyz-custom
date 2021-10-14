@@ -1,12 +1,23 @@
 #!ipxe
 ###
-### netboot.xyz-custom menu
+### netboot.xyz-custom menu example
 ###
 
-:start
-echo Hello world!
-sleep 10
+:custom
+clear custom_choice
+menu Samsung Firmware
+item --gap 980 Pro
+item option_one ${space} 3B2QGXA7
+choose custom_choice || goto custom_exit
+echo ${cls}
+goto ${custom_choice}
 goto custom_exit
 
+:option_one
+kernel https://boot.netboot.xyz/memdisk raw iso
+initrd https://s3.ap-northeast-2.amazonaws.com/global.semi.static/SAMSUNG_BRAND_SSD_980PRO_ISO/FW/E2512E718DB3E7EWGAJLDA8A7108M1Y2D9M9090J2KIA55338/Samsung_SSD_980_PRO_3B2QGXA7.iso
+boot || goto custom_exit
+
 :custom_exit
-exit 0
+chain utils.ipxe
+exit
